@@ -6,8 +6,15 @@ const PostgreSQLAdapter = require('@bot-whatsapp/database/postgres')
 const { POSTGRES_DB_HOST, POSTGRES_DB_USER, POSTGRES_DB_NAME, POSTGRES_DB_PASSWORD, POSTGRES_DB_PORT } = require('./config/dbConnection')
 const { flowGracias } = require('./flows/flowGracias')
 const { flowOpenai } = require('./flows/flowOpenai')
+const { runGPT } = require('./services')
 
 
+const doGpt = async () => {
+    const res = await runGPT('fede', [])
+
+    console.log(res);
+}
+doGpt()
 /**
  * Aqui declaramos los flujos hijos, los flujos se declaran de atras para adelante, es decir que si tienes un flujo de este tipo:
  *
