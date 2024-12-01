@@ -6,7 +6,8 @@
     "scripts": {
         "prestart": "npx eslint . --no-ignore",
         "pre-copy": "cd .. && npm run  copy.lib base-baileys-postgres",
-        "start": "node ./src/index.js"
+        "start": "concurrently \"node ./src/index.js\" \"node ./chromadb/index.js\"",
+        "start-chroma": "node ./chromadb/index.js"
     },
     "keywords": [],
     "dependencies": {
@@ -17,12 +18,16 @@
         "@bot-whatsapp/provider": "latest",
         "@whiskeysockets/baileys": "6.5.0",
         "cache-manager": "5.2.4",
+        "chromadb": "^1.9.4",
+        "chromadb-default-embed": "^2.13.2",
         "dotenv": "^16.4.5",
         "openai": "^4.72.0",
         "pg": "^8.11.2",
+        "sharp": "^0.30.7",
         "wa-sticker-formatter": "4.4.4"
     },
     "devDependencies": {
+        "concurrently": "^9.1.0",
         "eslint": "^8.52.0",
         "eslint-plugin-bot-whatsapp": "latest"
     },
