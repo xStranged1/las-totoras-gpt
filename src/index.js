@@ -1,4 +1,5 @@
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot')
+const { ChromaClient } = require('chromadb')
 
 const QRPortalWeb = require('@bot-whatsapp/portal')
 const BaileysProvider = require('@bot-whatsapp/provider/baileys')
@@ -14,7 +15,7 @@ const doGpt = async () => {
 
     console.log(res);
 }
-doGpt()
+
 /**
  * Aqui declaramos los flujos hijos, los flujos se declaran de atras para adelante, es decir que si tienes un flujo de este tipo:
  *

@@ -1,3 +1,10 @@
+package-lock.json
+#chroma
+chromadb/chroma_data/
+chromadb/node_modules/
+chromadb/chroma.log*
+chromadb/package-lock.json*
+
 # Logs
 logs
 *.log
@@ -9,7 +16,6 @@ lerna-debug.log*
 bot_sessions/
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
 # Runtime data
 pids
 *.pid
