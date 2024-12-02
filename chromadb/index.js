@@ -2,6 +2,7 @@ const { ChromaClient } = require('chromadb')
 const { exec } = require('child_process');
 
 const express = require('express');
+const { documents } = require('./documents');
 
 exec('chroma run', { stdio: 'ignore' }, (err, stdout, stderr) => {
     if (err) {
@@ -15,17 +16,11 @@ const createChromaClient = async () => {
     const client = new ChromaClient();
     // switch `createCollection` to `getOrCreateCollection` to avoid creating a new collection every time
     const collection = await client.getOrCreateCollection({
-        name: "my_collection",
+        name: "totoras",
+        metadata: { "hnsw:space": "cosine" },
     });
     // switch `addRecords` to `upsertRecords` to avoid adding the same documents every time
-    const documents = [
-        "This is a document about pineapple",
-        "This is a document about oranges",
-        "Patricio estrella vive en el fondo de bikini",
-        "Fede vive en su casa",
-        "rata",
-        "perro",
-    ]
+
     await collection.upsert({
         documents: documents,
         ids: documents.map((doc, i) => i.toString()),
