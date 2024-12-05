@@ -7,7 +7,9 @@ const PostgreSQLAdapter = require('@bot-whatsapp/database/postgres')
 const { POSTGRES_DB_HOST, POSTGRES_DB_USER, POSTGRES_DB_NAME, POSTGRES_DB_PASSWORD, POSTGRES_DB_PORT } = require('./config/dbConnection')
 const { flowGracias } = require('./flows/flowGracias')
 const { flowOpenai } = require('./flows/flowOpenai')
+const { flowImages } = require('./flows/flowImages')
 const { runGPT } = require('./services')
+const { getOrCreateEmbed, queryEmb } = require('./services/embed')
 
 
 const doGpt = async () => {
@@ -15,6 +17,23 @@ const doGpt = async () => {
 
     console.log(res);
 }
+
+
+const doEmbed = async () => {
+    const response = await queryEmb('que tienen los departamentos?')
+    console.log("response1: ", response);
+
+    setTimeout(async () => {
+        const response = await queryEmb('como es el pago')
+        console.log("response2: ", response);
+    }, 1000);
+
+    setTimeout(async () => {
+        const response = await queryEmb('quiero alquilar 4 dias del 10 de diciembre al 14 de diciembre')
+        console.log("response3: ", response);
+    }, 2000);
+}
+
 
 /**
  * Aqui declaramos los flujos hijos, los flujos se declaran de atras para adelante, es decir que si tienes un flujo de este tipo:
@@ -49,10 +68,11 @@ const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
             '👉 *doc* para ver la documentación',
             '👉 *gracias*  para ver la lista de videos',
             '👉 *openai* para hablar con chat gpt',
+            '👉 *imagenes* ver imagenes',
         ],
         null,
         null,
-        [flowDocs, flowGracias, flowOpenai]
+        [flowDocs, flowGracias, flowOpenai, flowImages]
     )
     .addAnswer((message) => {
         console.log('Recibido mensaje:', message);

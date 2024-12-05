@@ -4,7 +4,7 @@ chromadb/chroma_data/
 chromadb/node_modules/
 chromadb/chroma.log*
 chromadb/package-lock.json*
-
+chroma_data/
 # Logs
 logs
 *.log
