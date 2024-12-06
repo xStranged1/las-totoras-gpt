@@ -1,9 +1,12 @@
 const { CohereClient } = require('cohere-ai');
 const { documents } = require('../../doc/documents')
-const cohere = new CohereClient({ token: "uQVSnmZZ4ARttWputO87IpMbQieKUvaSpp58p5qA" });
 const fs = require('fs');
 const path = require('path');
 const { multiply, transpose } = require('mathjs');
+const { COHERE_API_KEY } = require('../../config/connections');
+
+
+const cohere = new CohereClient({ token: COHERE_API_KEY });
 
 const getEmbed = async () => {
     const response = await cohere.embed({
