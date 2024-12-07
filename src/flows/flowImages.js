@@ -1,7 +1,14 @@
 const { addKeyword } = require("@bot-whatsapp/bot");
 
 const flowImages = addKeyword(['imagenes', 'img', 'fotos'])
-    .addAnswer('Este mensaje envia una imagen', {
-        media: 'https://xstranged1.github.io/xStranged1/assets/me-12c0e623.jpg', //'c:\ruta\imagen.png'
+    .addAnswer("Estos son nuestros departamentos ✨")
+    .addAnswer('*Totoras 1*', {
+        media: 'https://raw.githubusercontent.com/xStranged1/las-totoras-gpt/refs/heads/main/doc/images/totoras-1.jpg',
+    })
+    .addAnswer('*Totoras 2*', {
+        media: 'https://raw.githubusercontent.com/xStranged1/las-totoras-gpt/refs/heads/main/doc/images/totoras-2.jpg',
+    })
+    .addAnswer('*Totoras 2*', {
+        media: 'https://raw.githubusercontent.com/xStranged1/las-totoras-gpt/refs/heads/main/doc/images/totoras-3.jpg',
     })
 module.exports = { flowImages }
