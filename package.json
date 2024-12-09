@@ -17,8 +17,6 @@
         "@bot-whatsapp/provider": "latest",
         "@whiskeysockets/baileys": "6.5.0",
         "cache-manager": "5.2.4",
-        "chromadb": "^1.9.4",
-        "chromadb-default-embed": "^2.13.2",
         "cohere-ai": "^7.15.0",
         "dotenv": "^16.4.5",
         "mathjs": "^14.0.0",
