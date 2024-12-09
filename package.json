@@ -6,8 +6,7 @@
     "scripts": {
         "prestart": "npx eslint . --no-ignore",
         "pre-copy": "cd .. && npm run  copy.lib base-baileys-postgres",
-        "start": "concurrently \"node ./src/index.js\" \"node ./chromadb/index.js\"",
-        "start-chroma": "node ./chromadb/index.js"
+        "start": "node ./src/index.js"
     },
     "keywords": [],
     "dependencies": {
