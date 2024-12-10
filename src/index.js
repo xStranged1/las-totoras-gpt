@@ -1,13 +1,11 @@
-const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot')
+const { createBot, createProvider, createFlow, addKeyword, EVENTS, endFlow } = require('@bot-whatsapp/bot')
 const QRPortalWeb = require('@bot-whatsapp/portal')
 const BaileysProvider = require('@bot-whatsapp/provider/baileys')
 const PostgreSQLAdapter = require('@bot-whatsapp/database/postgres')
 const { POSTGRES_DB_HOST, POSTGRES_DB_USER, POSTGRES_DB_NAME, POSTGRES_DB_PASSWORD, POSTGRES_DB_PORT } = require('../config/connections')
-const { flowOpenai } = require('./flows/flowOpenai')
-const { flowImages } = require('./flows/flowImages')
 const { runGPT } = require('./services')
 const { getOrCreateEmbed, queryEmb } = require('./services/embed')
-const { flowAyuda } = require('./flows/flowAyuda')
+const { flowOpenai, flowImages, flowAyuda, flowNotaDeVoz } = require('./flows')
 
 
 const doGpt = async () => {
@@ -32,22 +30,31 @@ const doEmbed = async () => {
     }, 2000);
 }
 
-const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
-    .addAction(async (ctx) => {
-        console.log(ctx);
-        console.log(`Enviar un mail con el con el numero de la persona: ${ctx.from}`)
+const flowPrincipal = addKeyword(['hola', 'ole', 'alo', EVENTS.WELCOME])
+    .addAction(async (ctx, { endFlow }) => {
+        if (ctx.from != 5492213996386) {
+            console.log(`Modo prueba: Solo mensajes de 5492213996386 ${ctx.from}: ${ctx.body}`);
+            return endFlow()
+        }
+    })
+    .addAction(async (ctx, { state }) => {
+        const myState = await state.getMyState()
+        const myHistory = myState?.history || [];
+        await state.update({ history: [...myHistory, ctx.body] });
+        console.log("myState");
+        console.log(myState);
     })
     .addAnswer('🙌 Hola bienvenido al chatbot de *Totoras 750* ')
     .addAnswer(
         [
-            'Te comparto los siguientes links de interes sobre el proyecto',
+            'Te comparto la siguiente información, puedes preguntarme cualquier cosa relacionada con los departamentos de Totoras 750',
             '👉 *openai* para hablar con chat gpt',
             '👉 *imagenes* para ver imagenes',
             '👉 *ayuda* para solicitar hablar con una persona',
         ],
         null,
         null,
-        [flowOpenai, flowImages, flowAyuda]
+        [flowOpenai, flowImages, flowAyuda, flowNotaDeVoz]
     )
 
 const main = async () => {

@@ -1,6 +1,6 @@
 const { addKeyword } = require("@bot-whatsapp/bot");
 
-const flowAyuda = addKeyword(['imagenes', 'img', 'fotos'])
+const flowAyuda = addKeyword(['ayuda', 'help'])
     .addAnswer("En unos minutos una persona se comunicará con usted")
     .addAnswer(
         [
