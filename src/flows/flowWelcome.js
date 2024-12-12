@@ -1,4 +1,4 @@
-const { addKeyword, EVENTS, endFlow } = require('@bot-whatsapp/bot')
+const { addKeyword, EVENTS } = require('@bot-whatsapp/bot')
 const { flowOpenai } = require('./flowOpenai')
 const { flowImages } = require('./flowImages')
 const { flowAyuda } = require('./flowAyuda')
@@ -7,7 +7,7 @@ const { keywords } = require('../consts/keywords')
 
 
 
-const flowWelcome = addKeyword([EVENTS.WELCOME])
+const flowWelcome = addKeyword(['welcome'])
     .addAnswer('🙌 Hola bienvenido al chatbot de *Totoras 750* ')
     .addAnswer(
         [
@@ -17,12 +17,14 @@ const flowWelcome = addKeyword([EVENTS.WELCOME])
             '👉 *ayuda* para solicitar hablar con una persona',
         ],
         { capture: true },
-        async (ctx, { gotoFlow }) => {
-            console.log('estoy en openai');
+        async (ctx, { gotoFlow, state }) => {
 
             if (!keywords.includes(ctx.body)) {
-                console.log('no incluye');
-
+                const myState = await state.getMyState()
+                const myHistory = myState?.history || [];
+                const mensaje = ctx.body
+                const newHistory = [...myHistory, mensaje]
+                await state.update({ history: newHistory });
                 return gotoFlow(flowOpenai)
             }
         },

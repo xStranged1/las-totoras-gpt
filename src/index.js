@@ -5,7 +5,7 @@ const PostgreSQLAdapter = require('@bot-whatsapp/database/postgres')
 const { POSTGRES_DB_HOST, POSTGRES_DB_USER, POSTGRES_DB_NAME, POSTGRES_DB_PASSWORD, POSTGRES_DB_PORT } = require('../config/connections')
 const { runGPT } = require('./services')
 const { getOrCreateEmbed, queryEmb } = require('./services/embed')
-const { flowOpenai, flowImages, flowAyuda, flowNotaDeVoz, flowWelcome } = require('./flows')
+const { flowOpenai, flowImages, flowNotaDeVoz, flowWelcome, flowAyuda, flows } = require('./flows')
 const { keywords } = require('./consts/keywords')
 
 
@@ -48,15 +48,23 @@ const flowPrincipal = addKeyword(['hola', 'ole', 'alo', EVENTS.WELCOME])
     .addAction(async (ctx, { state, gotoFlow }) => {
         const myState = await state.getMyState()
         const myHistory = myState?.history || [];
-        // await state.update({ history: [...myHistory, ctx.body] });
+
         if (myHistory.length == 0) {
+            console.log('guarda historial en index');
+
+            await state.update({ history: [...myHistory, ctx.body] }); // guarda historial
             return gotoFlow(flowWelcome)
+        } else {
+            const msg = ctx.body
+            if (!keywords.includes(msg)) {
+                return gotoFlow(flowOpenai)
+            }
         }
     })
 
 const main = async () => {
     const adapterDB = new PostgreSQLAdapter({ host: POSTGRES_DB_HOST, user: POSTGRES_DB_USER, database: POSTGRES_DB_NAME, password: POSTGRES_DB_PASSWORD, port: POSTGRES_DB_PORT })
-    const adapterFlow = createFlow([flowPrincipal])
+    const adapterFlow = createFlow([flowPrincipal, ...flows])
     const adapterProvider = createProvider(BaileysProvider)
     createBot({
         flow: adapterFlow,

@@ -1,6 +1,7 @@
-const { addKeyword } = require("@bot-whatsapp/bot");
+const { addKeyword, EVENTS } = require("@bot-whatsapp/bot");
+const { flowOpenai } = require("./flowOpenai");
 
-const flowAyuda = addKeyword(['ayuda', 'help'])
+const flowAyuda = addKeyword(['ayuda', 'help', EVENTS.WELCOME])
     .addAnswer("En unos minutos una persona se comunicará con usted")
     .addAnswer(
         [
@@ -8,6 +9,6 @@ const flowAyuda = addKeyword(['ayuda', 'help'])
         ],
         null,
         null,
-        []
+        [flowOpenai]
     )
 module.exports = { flowAyuda }

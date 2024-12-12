@@ -4,4 +4,5 @@ const { flowAyuda } = require('./flowAyuda')
 const { flowNotaDeVoz } = require('./flowVoice')
 const { flowWelcome } = require('./flowWelcome')
 
-module.exports = { flowAyuda, flowImages, flowOpenai, flowNotaDeVoz, flowWelcome }
+const flows = [flowWelcome, flowAyuda, flowImages, flowOpenai, flowNotaDeVoz]
+module.exports = { flows, flowAyuda, flowImages, flowOpenai, flowNotaDeVoz, flowWelcome }
