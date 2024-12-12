@@ -3,7 +3,12 @@ const { runGPT } = require("../services/index");
 
 const flowOpenai = addKeyword(['openai', 'chatgpt', 'chat gpt', EVENTS.WELCOME])
     .addAnswer(['Hola, soy un chatbot de Totoras 450', '¿Como puedo ayudarte?'])
-    .addAction({ capture: true }, async (ctx, { flowDynamic }) => {
+    .addAction({ capture: true }, async (ctx, { flowDynamic, state }) => {
+        console.log('estoy en openai');
+
+        const myState = await state.getMyState()
+        console.log("myState.history en openai");
+        console.log(myState.history);
         const mensaje = ctx.body
         return await flowDynamic(`Has dicho: ${mensaje}`)
     })
