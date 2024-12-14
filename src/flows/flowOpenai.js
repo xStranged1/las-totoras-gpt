@@ -6,17 +6,13 @@ const flowOpenai = addKeyword(['openai', 'chatgpt', 'chat gpt'])
     .addAction(async (ctx, { flowDynamic, state }) => {
         const myState = await state.getMyState()
         const myHistory = myState?.history || [];
-
         const mensaje = ctx.body
-        let newHistory = [...myHistory, mensaje]
-        if (newHistory.lenght == 3) {
-            newHistory = newHistory.slice(0, newHistory[newHistory.lenght - 1])
+        let newHistory
+        if (myHistory.length != 2) {
+            newHistory = [...myHistory, mensaje]
+            await state.update({ history: newHistory });
         }
-        console.log('guarda historial en openai');
-
-        await state.update({ history: newHistory });
         await flowDynamic(`historial mensajes:`)
-        console.log("newHistory", newHistory);
         newHistory.forEach(async msg => {
             await flowDynamic(`Has dicho: ${msg}`)
         });

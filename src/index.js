@@ -50,9 +50,9 @@ const flowPrincipal = addKeyword(['hola', 'ole', 'alo', EVENTS.WELCOME])
         const myHistory = myState?.history || [];
 
         if (myHistory.length == 0) {
-            console.log('guarda historial en index');
-
-            await state.update({ history: [...myHistory, ctx.body] }); // guarda historial
+            const msg = ctx.body
+            const newHistory = [...myHistory, msg]
+            await state.update({ history: newHistory }); // guarda historial
             return gotoFlow(flowWelcome)
         } else {
             const msg = ctx.body
