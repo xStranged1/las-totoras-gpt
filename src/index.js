@@ -6,7 +6,8 @@ const { POSTGRES_DB_HOST, POSTGRES_DB_USER, POSTGRES_DB_NAME, POSTGRES_DB_PASSWO
 const { runGPT } = require('./services')
 const { getOrCreateEmbed, queryEmb } = require('./services/embed')
 const { flowOpenai, flowImages, flowNotaDeVoz, flowWelcome, flowAyuda, flows } = require('./flows')
-const { keywords } = require('./consts/keywords')
+const { keywords, keywordsHello } = require('./consts/keywords')
+const { pushHistory } = require('./flows/flowOpenai')
 
 
 const doGpt = async () => {
@@ -31,7 +32,7 @@ const doEmbed = async () => {
     }, 2000);
 }
 
-const flowPrincipal = addKeyword(['hola', 'ole', 'alo', EVENTS.WELCOME])
+const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
 
     .addAction(async (ctx, { endFlow }) => {
         if (ctx.from != 5492213996386) {
@@ -51,8 +52,7 @@ const flowPrincipal = addKeyword(['hola', 'ole', 'alo', EVENTS.WELCOME])
 
         if (myHistory.length == 0) {
             const msg = ctx.body
-            const newHistory = [...myHistory, msg]
-            await state.update({ history: newHistory }); // guarda historial
+            await pushHistory(state, 'user', msg)
             return gotoFlow(flowWelcome)
         } else {
             const msg = ctx.body

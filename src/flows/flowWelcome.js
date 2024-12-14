@@ -17,14 +17,9 @@ const flowWelcome = addKeyword(['welcome'])
             '👉 *ayuda* para solicitar hablar con una persona',
         ],
         { capture: true },
-        async (ctx, { gotoFlow, state }) => {
+        async (ctx, { gotoFlow }) => {
 
             if (!keywords.includes(ctx.body)) {
-                const myState = await state.getMyState()
-                const myHistory = myState?.history || [];
-                const mensaje = ctx.body
-                const newHistory = [...myHistory, mensaje]
-                await state.update({ history: newHistory });
                 return gotoFlow(flowOpenai)
             }
         },

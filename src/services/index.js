@@ -8,11 +8,8 @@ const openai = new OpenAI({
 const runGPT = async (name, history) => {
 
     try {
-        console.log("name recibido chatgpt");
-        console.log(name);
         console.log("history recibido chatgpt");
         console.log(history);
-
         const promtp = generatePrompt(name)
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
