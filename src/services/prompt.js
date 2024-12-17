@@ -16,7 +16,8 @@ const DATA_BASE = [
     `- Es posible coordinar una videollamada para mostrar las instalaciones`,
     `- Alrededor del alojamiento: Playa 1.2km, Avenida Bunge 500m, supermercado al lado, restaurante en frente, plaza a 50m`,
     `- Los departamentos cuentan con: cocina, heladera, microondas, pava electrica, utensillos, Wifi, smart TV, Netflix, aire acondicionado, ventiladores, calefaccion, sommiers con cobertores con mantas.`,
-    `- Opcional: Servicio de blanqueria, ropa de cama`,
+    `- Servicio de blanqueria opcional: ropa de cama, toalla, toallón`,
+    `- Alquiler de reposeras: $10000 pesos`,
 ].join('\n')
 
 const TARIFAS = `El pago es con depósito del 50% el resto al ingresar. Precios: $175.000 por día para 5 personas. `

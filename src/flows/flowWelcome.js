@@ -8,13 +8,12 @@ const { keywords } = require('../consts/keywords')
 
 
 const flowWelcome = addKeyword(['welcome'])
-    .addAnswer('🙌 Hola bienvenido al chatbot de *Totoras 750* ')
+    .addAnswer('🙌 Hola bienvenidos al *Totoras 750*')
     .addAnswer(
         [
-            'Te comparto la siguiente información, puedes preguntarme cualquier cosa relacionada con los departamentos de *Totoras 750*',
-            '👉 *openai* para hablar con chat gpt',
-            '👉 *imagenes* para ver imagenes',
-            '👉 *ayuda* para solicitar hablar con una persona',
+            'Te comparto la siguiente información, puedes preguntarme cualquier cosa relacionada con los alojamientos',
+            '👉 Escribe *imagenes* para ver imagenes de los departamentos',
+            '👉 Escribe *ayuda* para solicitar hablar con una persona',
         ],
         { capture: true },
         async (ctx, { gotoFlow }) => {

@@ -11,6 +11,9 @@ const runGPT = async (name, history) => {
         console.log("history recibido chatgpt");
         console.log(history);
         const promtp = generatePrompt(name)
+        console.log("promtp");
+        console.log(promtp);
+
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [

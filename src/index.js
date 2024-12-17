@@ -8,6 +8,7 @@ const { getOrCreateEmbed, queryEmb } = require('./services/embed')
 const { flowOpenai, flowImages, flowNotaDeVoz, flowWelcome, flowAyuda, flows } = require('./flows')
 const { keywords, keywordsHello } = require('./consts/keywords')
 const { pushHistory } = require('./flows/flowOpenai')
+const { generatePrompt } = require('./services/prompt')
 
 
 const doGpt = async () => {
@@ -15,27 +16,25 @@ const doGpt = async () => {
 
     console.log(res);
 }
-
+const prompt = generatePrompt('fede')
+console.log(prompt);
 
 const doEmbed = async () => {
-    const response = await queryEmb('que tienen los departamentos?')
-    console.log("response1: ", response);
 
     setTimeout(async () => {
-        const response = await queryEmb('como es el pago')
-        console.log("response2: ", response);
-    }, 1000);
-
-    setTimeout(async () => {
-        const response = await queryEmb('quiero alquilar 4 dias del 10 de diciembre al 14 de diciembre')
+        const response = await queryEmb('me dan toallones, toallas y eso?')
         console.log("response3: ", response);
     }, 2000);
 }
 
+doEmbed()
+
+
 const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
 
-    .addAction(async (ctx, { endFlow }) => {
-        if (ctx.from != 5492213996386) {
+    .addAction(async (ctx, { endFlow }) => { // agregar sanguchera, licuadora
+
+        if (ctx.from != 5492246580576) {
             console.log(`Modo prueba: Solo mensajes de 5492213996386 ${ctx.from}: ${ctx.body}`);
             return endFlow()
         }

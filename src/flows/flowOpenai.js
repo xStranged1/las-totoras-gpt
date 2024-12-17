@@ -4,13 +4,10 @@ const { runGPT } = require("../services/index");
 const pushHistory = async (state, role, msg) => { // role: user | assistant | system
     const myState = await state.getMyState()
     const history = myState?.history || [];
-
     history.push({
         role: role,
         content: msg
     })
-
-    console.log('guarda historial en openai', history);
     await state.update({ history: history });
     return history
 }
