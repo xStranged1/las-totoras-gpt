@@ -38,8 +38,8 @@ const getOrCreateEmbed = async () => {
 }
 
 
-function returnResults(queryEmb, docEmb, documents) {
-    const n = 5; // Personaliza el número de resultados top-N
+function returnResults(queryEmb, docEmb, documents, nResults) {
+    const n = nResults ?? 5;
     const scores = multiply(queryEmb, transpose(docEmb))[0];
 
     // Obtener los índices de los N puntajes más altos
@@ -59,7 +59,7 @@ function returnResults(queryEmb, docEmb, documents) {
 }
 
 
-const queryEmb = async (query) => {
+const queryEmb = async (query, nResults) => {
     const response = await cohere.embed({
         model: "embed-multilingual-v3.0",
         texts: [query],
@@ -67,7 +67,7 @@ const queryEmb = async (query) => {
         truncate: "NONE"
     });
     const docEmbed = await getOrCreateEmbed()
-    const results = await returnResults(response.embeddings, docEmbed, documents)
+    const results = await returnResults(response.embeddings, docEmbed, documents, nResults)
     return results
 }
 

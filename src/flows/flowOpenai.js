@@ -18,7 +18,8 @@ const flowOpenai = addKeyword(['openai', 'chatgpt', 'chat gpt'])
         try {
             const mensaje = ctx.body
             let newHistory = await pushHistory(state, 'user', mensaje)
-            const res = await runGPT(ctx.pushName ?? '', newHistory)
+            const name = ctx.pushName ?? ''
+            const res = await runGPT(name, newHistory, mensaje)
             await flowDynamic(res)
             await pushHistory(state, 'assistant', res)
         } catch (err) {
