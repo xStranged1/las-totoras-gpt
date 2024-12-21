@@ -8,42 +8,39 @@ const { getOrCreateEmbed, queryEmb } = require('./services/embed')
 const { flowOpenai, flowImages, flowNotaDeVoz, flowWelcome, flowAyuda, flows } = require('./flows')
 const { keywords, keywordsHello } = require('./consts/keywords')
 const { pushHistory } = require('./flows/flowOpenai')
-const { generatePrompt } = require('./services/prompt')
+const { generateInitialPrompt } = require('./services/prompt')
 
 
 const doGpt = async () => {
     const res = await runGPT('fede', [])
-
     console.log(res);
 }
-const prompt = generatePrompt('fede')
-console.log(prompt);
 
 const doEmbed = async () => {
 
     setTimeout(async () => {
-        const response = await queryEmb('me dan toallones, toallas y eso?')
+        const response = await queryEmb('me dan toallones, toallas y eso?', 5)
         console.log("response3: ", response);
     }, 2000);
 }
 
-doEmbed()
+// doEmbed()
 
+const doPrompt = async () => {
+    const prompt = await generateInitialPrompt('fede', 'hay un depto para 4 personas?')
+    console.log(prompt);
+}
+doPrompt()
 
 const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
 
-    .addAction(async (ctx, { endFlow }) => { // agregar sanguchera, licuadora
+    .addAction(async (ctx, { endFlow }) => {
 
         if (ctx.from != 5492246580576) {
             console.log(`Modo prueba: Solo mensajes de 5492213996386 ${ctx.from}: ${ctx.body}`);
             return endFlow()
         }
     })
-
-    /* 
-        quiero que la primera vez de la bienvenida, y si escribe cualquier otra cosa despues,
-        que vaya al flujo de openai
-    */
 
     .addAction(async (ctx, { state, gotoFlow }) => {
         const myState = await state.getMyState()

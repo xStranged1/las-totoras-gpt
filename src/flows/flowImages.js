@@ -1,6 +1,7 @@
 const { addKeyword } = require("@bot-whatsapp/bot");
+const { keywordsImages } = require("../consts/keywords");
 
-const flowImages = addKeyword(['imagenes', 'imágenes', 'Imagenes', 'Imágenes', 'img', 'fotos'])
+const flowImages = addKeyword(keywordsImages)
     .addAnswer("Estas son nuestras instalaciones ✨")
     .addAnswer('Monoambiente *Totoras 1*', { // para 1 o 2 personas, cama simples o doble
         media: 'https://raw.githubusercontent.com/xStranged1/las-totoras-gpt/refs/heads/main/doc/images/totoras-3.jpg',

@@ -1,16 +1,16 @@
 const OpenAI = require('openai');
-const { generatePrompt, generatePromptDetermine } = require("./prompt");
+const { generatePromptDetermine, generateInitialPrompt } = require("./prompt");
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const runGPT = async (name, history) => {
+const runGPT = async (name, history, lastMessage) => {
 
     try {
         console.log("history recibido chatgpt");
         console.log(history);
-        const promtp = generatePrompt(name)
+        const promtp = await generateInitialPrompt(name, lastMessage)
         console.log("promtp");
         console.log(promtp);
 
