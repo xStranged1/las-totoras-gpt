@@ -8,7 +8,7 @@ const documents = [
     `El monoambiente Totoras 2 es para 3 personas, tiene camas simples individuales`,
     `El departamento Totoras 3 es para 4-5 personas, tiene camas individuales, 1 cama doble king-size`,
     "Opcional: Servicio de blanqueria, ropa de cama",
-    `Alquiler de reposeras: $10000 pesos`,
+    `Opcional: Alquiler de reposeras: $10000 pesos`,
     "Fechas: Las fechas disponibles pueden variar, consultar",
     "Precio: El precio de los alquileres pueden variar, consultar",
     "Dirección: Totoras 750 entre Mengacho y De La Trucha",
