@@ -3,6 +3,7 @@ export const documents = [
     "El pago es con depósito del 50% y el resto al ingresar",
     "Es posible coordinar una videollamada para mostrar las instalaciones",
     "Alrededor del departamento: Playa 1.2km, Avenida Bunge 500m, supermercado al lado, restaurante en frente, plaza a 50m",
+    `Se cuenta con parrilla chulengo`,
     `Todos los alquileres cuentan con: cocina, heladera, microondas, pava electrica, sanguchera, licuadora, utensillos, Wifi, smart TV, Netflix, aire acondicionado, ventiladores, calefaccion, sommiers con cobertores con mantas.`,
     `El monoambiente Totoras 1 es para 1 o 2 personas, tiene cama simples o doble`,
     `El monoambiente Totoras 2 es para 3 personas, tiene camas simples individuales`,

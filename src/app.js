@@ -3,9 +3,10 @@ import { PostgreSQLAdapter as Database } from '@builderbot/database-postgres'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { pool } from '../config/connections.js'
 import { keywords, keywordsEnable, keywordsHello } from './consts/keywords.js'
-import { flowAdmin, flowAyuda, flowEnableBot, flowEnableBotTwo, flowImages, flowNotaDeVoz, flowWelcome } from './flows/index.js'
+import { flowAdmin, flowAyuda, flowEnableBot, flowImages, flowNotaDeVoz, flowWelcome } from './flows/index.js'
 import dotenv from 'dotenv'
 import { flowOpenai, pushHistory } from './flows/flowOpenai.js'
+import { ADMIN_NUMBERS, WHITE_LIST } from './consts/consts.js'
 
 dotenv.config()
 const PORT = process.env.PORT ?? 3008
@@ -38,8 +39,6 @@ pool.on('error', (err) => {
     console.error('Unexpected error on idle client:', err);
 });
 
-const whiteList = ["5492246580576", "5492213996386", "5492246517055"]
-const adminNumber = '5492246517055'
 
 const flowExample = addKeyword(['example'])
     .addAnswer(
@@ -66,18 +65,16 @@ const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
 
         const msg = ctx.body
 
-        if (!whiteList.includes(ctx.from)) {
-            console.log(`Modo prueba: Solo mensajes en whitelist ${ctx.from}: ${ctx.body}`);
+        if (!WHITE_LIST.includes(ctx.from)) {
+            console.log(`Modo de prueba: Solo mensajes en whitelist ${ctx.from}: ${ctx.body}`);
             return endFlow()
         }
 
-        if (ctx.from == adminNumber) {
+        if (ADMIN_NUMBERS.includes(ctx.from)) {
 
             const myState = state.getMyState()
             const doSetNumber = myState?.doSetNumber || [];
             const firstTime = myState?.firstTime || [];
-            console.log("firstTime");
-            console.log(firstTime);
             if (firstTime.length == 0) {
                 await state.update({ firstTime: [true] });
                 await flowDynamic('Hola, este es el flow de admin')
@@ -120,7 +117,7 @@ const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
         }
     })
 const main = async () => {
-    const adapterFlow = createFlow([flowPrincipal, flowExample, flowWelcome, flowImages, flowOpenai, flowNotaDeVoz, flowAdmin, flowEnableBot, flowAyuda, flowEnableBotTwo])
+    const adapterFlow = createFlow([flowPrincipal, flowExample, flowWelcome, flowImages, flowOpenai, flowNotaDeVoz, flowAdmin, flowEnableBot, flowAyuda])
 
     const adapterProvider = createProvider(Provider)
     const adapterDB = new Database({
@@ -131,10 +128,15 @@ const main = async () => {
         port: +process.env.POSTGRES_DB_PORT
     })
 
+
     const { handleCtx, httpServer } = await createBot({
         flow: adapterFlow,
         provider: adapterProvider,
         database: adapterDB,
+    })
+
+    adapterProvider.on('message', ({ body, from }) => {
+        console.log(`Message Payload:`, { body, from })
     })
 
     adapterProvider.server.post(
@@ -175,7 +177,6 @@ const main = async () => {
             return res.end(JSON.stringify({ status: 'ok', number, intent }))
         })
     )
-
     httpServer(+PORT)
 }
 
