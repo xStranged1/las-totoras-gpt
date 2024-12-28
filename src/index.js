@@ -5,7 +5,7 @@ const PostgreSQLAdapter = require('@bot-whatsapp/database/postgres')
 const { POSTGRES_DB_HOST, POSTGRES_DB_USER, POSTGRES_DB_NAME, POSTGRES_DB_PASSWORD, POSTGRES_DB_PORT, pool } = require('../config/connections')
 const { runGPT } = require('./services')
 const { getOrCreateEmbed, queryEmb } = require('./services/embed')
-const { flowOpenai, flowImages, flowNotaDeVoz, flowWelcome, flowAyuda, flows } = require('./flows')
+const { flowOpenai, flowImages, flowNotaDeVoz, flowWelcome, flowAyuda, flows, flowAdmin } = require('./flows')
 const { keywords, keywordsHello } = require('./consts/keywords')
 const { pushHistory } = require('./flows/flowOpenai')
 const { generateInitialPrompt } = require('./services/prompt')
@@ -43,14 +43,19 @@ pool.on('error', (err) => {
     console.error('Unexpected error on idle client:', err);
 });
 
-const whiteList = ["5492246580576", "5492213996386"]
+const whiteList = ["5492246580576", "5492213996386", "5492246517055"]
+const adminNumber = '5492246517055'
 const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
 
-    .addAction(async (ctx, { endFlow }) => {
+    .addAction(async (ctx, { endFlow, gotoFlow }) => {
 
         if (!whiteList.includes(ctx.from)) {
-            console.log(`Modo prueba: Solo mensajes de 5492213996386 ${ctx.from}: ${ctx.body}`);
+            console.log(`Modo prueba: Solo mensajes en whitelist ${ctx.from}: ${ctx.body}`);
             return endFlow()
+        }
+
+        if (ctx.from == adminNumber) {
+            return gotoFlow(flowAdmin)
         }
 
     })
