@@ -2,7 +2,7 @@ import { createBot, createProvider, createFlow, addKeyword, EVENTS } from '@buil
 import { PostgreSQLAdapter as Database } from '@builderbot/database-postgres'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { pool } from '../config/connections.js'
-import { keywords, keywordsHello } from './consts/keywords.js'
+import { keywords, keywordsEnable, keywordsHello } from './consts/keywords.js'
 import { flowAdmin, flowAyuda, flowEnableBot, flowEnableBotTwo, flowImages, flowNotaDeVoz, flowWelcome } from './flows/index.js'
 import dotenv from 'dotenv'
 import { flowOpenai, pushHistory } from './flows/flowOpenai.js'
@@ -41,9 +41,30 @@ pool.on('error', (err) => {
 const whiteList = ["5492246580576", "5492213996386", "5492246517055"]
 const adminNumber = '5492246517055'
 
+const flowExample = addKeyword(['example'])
+    .addAnswer(
+        '*Enter the number to check:*',
+        { capture: true },
+        async (ctx, { provider, flowDynamic }) => {
+            const checkNumber = ctx.body
+            try {
+                const onWhats = await provider.vendor.onWhatsApp(checkNumber)
+                if (onWhats[0]?.exists) {
+                    await flowDynamic([`*Exists:* ${onWhats[0].exists}\n*JID:* ${onWhats[0].jid}`, `*Object:* ${JSON.stringify(onWhats, null, 6)}`])
+                }
+                else {
+                    await flowDynamic(`The number *${checkNumber}* does not exists on Whatsapp.`)
+                }
+            } catch (error) {
+                await flowDynamic(`*Error:* ${error}`);
+            }
+        }
+    )
 
 const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
-    .addAction(async (ctx, { endFlow, gotoFlow, flowDynamic }) => {
+    .addAction(async (ctx, { endFlow, gotoFlow, flowDynamic, state }) => {
+
+        const msg = ctx.body
 
         if (!whiteList.includes(ctx.from)) {
             console.log(`Modo prueba: Solo mensajes en whitelist ${ctx.from}: ${ctx.body}`);
@@ -51,11 +72,34 @@ const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
         }
 
         if (ctx.from == adminNumber) {
-            await flowDynamic('Hola, este es el flow de admin')
-            await flowDynamic('👉 Escribe *activar* o *desactivar* para desactivar el chatbot a un numero en específico')
-            await flowDynamic('👉 Escribe *ayuda* para solicitar hablar con una persona')
-            await flowDynamic('👉 Escribe *imagenes* para ver imagenes de los departamentos')
-            return gotoFlow(flowAdmin)
+
+            const myState = state.getMyState()
+            const doSetNumber = myState?.doSetNumber || [];
+            const firstTime = myState?.firstTime || [];
+            console.log("firstTime");
+            console.log(firstTime);
+            if (firstTime.length == 0) {
+                await state.update({ firstTime: [true] });
+                await flowDynamic('Hola, este es el flow de admin')
+                await flowDynamic('👉 Escribe *activar* o *desactivar* para desactivar el chatbot a un numero en específico')
+                await flowDynamic('👉 Escribe *ayuda* para solicitar hablar con una persona')
+                await flowDynamic('👉 Escribe *imagenes* para ver imagenes de los departamentos')
+                return endFlow()
+            }
+
+            if (doSetNumber.length > 0) {
+                await state.update({ doSetNumber: [] });
+                return gotoFlow(flowEnableBot)
+            }
+
+            if (keywordsEnable.includes(msg.toLocaleLowerCase())) {
+                await flowDynamic('Escribe el numero del cliente')
+                await state.update({ doSetNumber: [true] });
+                return endFlow()
+            } else {
+                await flowDynamic('no valido')
+                return endFlow()
+            }
         }
 
     })
@@ -76,7 +120,7 @@ const flowPrincipal = addKeyword([...keywordsHello, EVENTS.WELCOME])
         }
     })
 const main = async () => {
-    const adapterFlow = createFlow([flowPrincipal, flowWelcome, flowImages, flowOpenai, flowNotaDeVoz, flowAdmin, flowEnableBot, flowAyuda, flowEnableBotTwo])
+    const adapterFlow = createFlow([flowPrincipal, flowExample, flowWelcome, flowImages, flowOpenai, flowNotaDeVoz, flowAdmin, flowEnableBot, flowAyuda, flowEnableBotTwo])
 
     const adapterProvider = createProvider(Provider)
     const adapterDB = new Database({

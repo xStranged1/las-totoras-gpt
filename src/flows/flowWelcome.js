@@ -11,7 +11,8 @@ export const flowWelcome = addKeyword(['welcome'])
             '👉 Escribe *ayuda* para solicitar hablar con una persona',
         ],
         { capture: true },
-        async (ctx, { gotoFlow }) => {
+        async (ctx, { gotoFlow }) => { // esto no funciona, solo funciona de app.js
+            console.log('nunca se ejecuta esto');
 
             if (!keywords.includes(ctx.body)) {
                 return gotoFlow(flowOpenai)
