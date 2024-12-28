@@ -1,19 +1,10 @@
-const { addKeyword } = require('@bot-whatsapp/bot')
+import { addKeyword } from "@builderbot/bot";
 
-const flowEnableBot = addKeyword(['desactivar', 'activar'])
-    .addAnswer('Escribe el numero del cliente')
-    .addAction({ capture: true }, async (ctx, { flowDynamic, blacklist }) => {
-        let number = ctx.body
-        number = number.replace(/[-+\s]/g, "");
-        console.log(number);
-        console.log(blacklist);
-
-        const dataCheck = blacklist.checkIf(number)
-        await flowDynamic(`Muted: ${dataCheck}`);
-
-        await flowDynamic(`Se a cambiado el estado a ${dataCheck}`);
-        blacklist.add(ctx.from)
-
-    })
-
-module.exports = { flowEnableBot }
+export const flowEnableBot = addKeyword(['desactivar', 'activar'])
+    .addAnswer('Ingrese nombre del cliente', { capture: true },
+        async (ctx, { fallBack }) => {
+            if (ctx.body.includes('f')) {
+                return fallBack('opa')
+            }
+        },
+    )

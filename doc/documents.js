@@ -1,4 +1,4 @@
-const documents = [
+export const documents = [
     `Condiciones de alquiler: Estadia cortas (hasta 15 dias), no se aceptan mascotas`,
     "El pago es con depósito del 50% y el resto al ingresar",
     "Es posible coordinar una videollamada para mostrar las instalaciones",
@@ -14,4 +14,3 @@ const documents = [
     "Dirección: Totoras 750 entre Mengacho y De La Trucha",
     "No es posible alquilar si son 7 personas o más",
 ]
-module.exports = { documents }

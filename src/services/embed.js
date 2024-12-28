@@ -1,11 +1,10 @@
-const { CohereClient } = require('cohere-ai');
-const { documents } = require('../../doc/documents')
-const fs = require('fs');
-const path = require('path');
-const { multiply, transpose } = require('mathjs');
-const { COHERE_API_KEY } = require('../../config/connections');
-
-
+import { CohereClient } from 'cohere-ai';
+import { documents } from '../../doc/documents.js';
+import fs from 'fs';
+import path from 'path';
+import { multiply, transpose } from 'mathjs';
+import { COHERE_API_KEY } from '../../config/connections.js';
+import { fileURLToPath } from 'url';
 const cohere = new CohereClient({ token: COHERE_API_KEY });
 
 const getEmbed = async () => {
@@ -15,28 +14,24 @@ const getEmbed = async () => {
         inputType: "search_query",
         truncate: "NONE"
     });
-    return response.embeddings
-}
+    return response.embeddings;
+};
 
 
-// Ruta del archivo JSON
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const filePath = path.join(__dirname, 'embed.json');
 
-// Función para leer o crear el archivo
 const getOrCreateEmbed = async () => {
     if (fs.existsSync(filePath)) {
-        // Leer y devolver el contenido del archivo si existe
         console.log('load embed.json');
         const contenido = fs.readFileSync(filePath, 'utf8');
         return JSON.parse(contenido);
     }
 
-    const embed = await getEmbed()
-    // Crear el archivo con el contenido por defecto
+    const embed = await getEmbed();
     fs.writeFileSync(filePath, JSON.stringify(embed, null, 2));
     return embed;
-}
-
+};
 
 function returnResults(queryEmb, docEmb, documents, nResults) {
     const n = nResults ?? 5;
@@ -58,7 +53,6 @@ function returnResults(queryEmb, docEmb, documents, nResults) {
     return results;
 }
 
-
 const queryEmb = async (query, nResults) => {
     const response = await cohere.embed({
         model: "embed-multilingual-v3.0",
@@ -66,9 +60,9 @@ const queryEmb = async (query, nResults) => {
         inputType: "search_query",
         truncate: "NONE"
     });
-    const docEmbed = await getOrCreateEmbed()
-    const results = await returnResults(response.embeddings, docEmbed, documents, nResults)
-    return results
-}
+    const docEmbed = await getOrCreateEmbed();
+    const results = await returnResults(response.embeddings, docEmbed, documents, nResults);
+    return results;
+};
 
-module.exports = { getOrCreateEmbed, queryEmb }
+export { getOrCreateEmbed, queryEmb };

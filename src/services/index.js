@@ -1,11 +1,12 @@
-const OpenAI = require('openai');
-const { generatePromptDetermine, generateInitialPrompt } = require("./prompt");
+import OpenAI from "openai";
+import { generateInitialPrompt, generatePromptDetermine } from "./prompt.js";
+
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const runGPT = async (name, history, lastMessage) => {
+export const runGPT = async (name, history, lastMessage) => {
 
     try {
         console.log("history recibido chatgpt");
@@ -39,7 +40,7 @@ const runGPT = async (name, history, lastMessage) => {
 
 }
 
-const runDetermine = async (history) => {
+export const runDetermine = async (history) => {
     try {
         const promtp = generatePromptDetermine()
         const response = await openai.chat.completions.create({
@@ -64,7 +65,5 @@ const runDetermine = async (history) => {
         console.log("err: ", err);
     }
 }
-
-module.exports = { runGPT, runDetermine }
 
 

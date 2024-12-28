@@ -1,7 +1,7 @@
-const { addKeyword, EVENTS } = require("@bot-whatsapp/bot");
-const { flowOpenai } = require("./flowOpenai");
+import { addKeyword, EVENTS } from "@builderbot/bot"
+import { flowOpenai } from "./flowOpenai.js"
 
-const flowAyuda = addKeyword(['ayuda', 'help', EVENTS.WELCOME])
+export const flowAyuda = addKeyword(['ayuda', 'help', EVENTS.WELCOME])
     .addAnswer("En unos minutos una persona se comunicará con usted")
     .addAnswer(
         [
@@ -11,4 +11,3 @@ const flowAyuda = addKeyword(['ayuda', 'help', EVENTS.WELCOME])
         null,
         [flowOpenai]
     )
-module.exports = { flowAyuda }

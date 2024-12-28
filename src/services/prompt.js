@@ -1,6 +1,5 @@
-const { documents } = require("../../doc/documents")
-const { queryEmb } = require("./embed")
-
+import { documents } from "../../doc/documents.js"
+import { queryEmb } from "../services/embed.js"
 const PROMPT_DETERMINE = `
 Analiza la conversación entre el cliente (C) y el vendedor (V) para identificar el producto de interés del cliente.
 
@@ -13,9 +12,9 @@ Debes responder solo con el ID del producto. Si no puedes determinarlo o si el c
 ID: 
 `
 
-const DATA_BASE = documents
+export const DATA_BASE = documents
 
-const TARIFAS = `El pago es con depósito del 50% el resto al ingresar. Precios: $175.000 por día para 5 personas. `
+export const TARIFAS = `El pago es con depósito del 50% el resto al ingresar. Precios: $175.000 por día para 5 personas. `
 
 const PROMPT = `
 Como asistente virtual para el alquiler de departamentos "Totoras 750" en Pinamar, tu principal responsabilidad es utilizar la información de la BASE_DE_DATOS para responder a las consultas de los clientes y persuadirlos para que alquilen un departamento.
@@ -35,14 +34,12 @@ DIRECTRICES PARA RESPONDER AL CLIENTE:
 - Respuestas corta ideales para whatsapp menos de 300 caracteres.
 `
 
-const generateInitialPrompt = async (name, message) => {
+export const generateInitialPrompt = async (name, message) => {
     const significantDB = await queryEmb(message, 5)
     const docs = significantDB.map((doc) => doc.document)
     return PROMPT.replace('{customer_name}', name).replace('{context}', docs)
 }
 
-const generatePromptDetermine = () => {
+export const generatePromptDetermine = () => {
     return PROMPT_DETERMINE
 }
-
-module.exports = { generateInitialPrompt, generatePromptDetermine }

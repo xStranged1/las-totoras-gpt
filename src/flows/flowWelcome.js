@@ -1,13 +1,8 @@
-const { addKeyword, EVENTS } = require('@bot-whatsapp/bot')
-const { flowOpenai } = require('./flowOpenai')
-const { flowImages } = require('./flowImages')
-const { flowAyuda } = require('./flowAyuda')
-const { flowNotaDeVoz } = require('./flowVoice')
-const { keywords } = require('../consts/keywords')
+import { addKeyword } from "@builderbot/bot"
+import { keywords } from "../consts/keywords.js"
+import { flowOpenai, flowImages, flowAyuda, flowNotaDeVoz } from "./index.js"
 
-
-
-const flowWelcome = addKeyword(['welcome'])
+export const flowWelcome = addKeyword(['welcome'])
     .addAnswer('🙌 Hola bienvenidos al *Totoras 750*')
     .addAnswer(
         [
@@ -24,5 +19,3 @@ const flowWelcome = addKeyword(['welcome'])
         },
         [flowOpenai, flowImages, flowAyuda, flowNotaDeVoz]
     )
-
-module.exports = { flowWelcome }

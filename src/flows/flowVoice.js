@@ -1,8 +1,7 @@
-const { addKeyword, EVENTS } = require("@bot-whatsapp/bot");
-const { flowAyuda } = require("./flowAyuda");
+import { addKeyword, EVENTS } from "@builderbot/bot";
+import { flowAyuda } from "./flowAyuda.js";
 
-
-const flowNotaDeVoz = addKeyword(EVENTS.VOICE_NOTE)
+export const flowNotaDeVoz = addKeyword(EVENTS.VOICE_NOTE)
     .addAnswer('Todavía no tengo capacidad para responder audios 😞')
     .addAnswer(
         [
@@ -12,5 +11,3 @@ const flowNotaDeVoz = addKeyword(EVENTS.VOICE_NOTE)
         null,
         [flowAyuda]
     )
-
-module.exports = { flowNotaDeVoz }
