@@ -1,35 +1,31 @@
 {
-    "name": "base-bailey-postgres",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "prestart": "npx eslint . --no-ignore",
-        "pre-copy": "cd .. && npm run  copy.lib base-baileys-postgres",
-        "start": "node ./src/index.js"
-    },
-    "keywords": [],
-    "dependencies": {
-        "@bot-whatsapp/bot": "latest",
-        "@bot-whatsapp/cli": "latest",
-        "@bot-whatsapp/database": "latest",
-        "@bot-whatsapp/portal": "latest",
-        "@bot-whatsapp/provider": "latest",
-        "@whiskeysockets/baileys": "6.5.0",
-        "cache-manager": "5.2.4",
-        "cohere-ai": "^7.15.0",
-        "dotenv": "^16.4.5",
-        "mathjs": "^14.0.0",
-        "openai": "^4.72.0",
-        "pg": "^8.11.2",
-        "sharp": "^0.30.7",
-        "wa-sticker-formatter": "4.4.4"
-    },
-    "devDependencies": {
-        "concurrently": "^9.1.0",
-        "eslint": "^8.52.0",
-        "eslint-plugin-bot-whatsapp": "latest"
-    },
-    "author": "",
-    "license": "ISC"
+  "name": "base-bailey-json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --no-ignore",
+    "dev": "npm run lint && nodemon ./src/app.js",
+    "start": "node ./src/app.js"
+  },
+  "keywords": [],
+  "dependencies": {
+    "@builderbot/bot": "1.2.2",
+    "@builderbot/provider-baileys": "1.2.2",
+    "@builderbot/database-postgres": "1.2.2",
+    "dotenv": "^16.4.5",
+    "cache-manager": "5.2.4",
+    "cohere-ai": "^7.15.0",
+    "mathjs": "^14.0.0",
+    "openai": "^4.72.0",
+    "pg": "^8.11.2"
+  },
+  "devDependencies": {
+    "eslint-plugin-builderbot": "latest",
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.0"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -1,8 +1,12 @@
-const { flowImages } = require('./flowImages')
-const { flowOpenai } = require('./flowOpenai')
-const { flowAyuda } = require('./flowAyuda')
-const { flowNotaDeVoz } = require('./flowVoice')
-const { flowWelcome } = require('./flowWelcome')
+import { flowAdmin } from "./flowAdmin.js";
+import { flowAyuda } from "./flowAyuda.js";
+import { flowEnableBot } from "./flowEnableBot.js";
+import { flowEnableBotTwo } from "./flowEnableTwo.js";
+import { flowImages } from "./flowImages.js";
+import { flowOpenai } from "./flowOpenai.js";
+import { flowNotaDeVoz } from "./flowVoice.js";
+import { flowWelcome } from "./flowWelcome.js";
 
-const flows = [flowWelcome, flowAyuda, flowImages, flowOpenai, flowNotaDeVoz]
-module.exports = { flows, flowAyuda, flowImages, flowOpenai, flowNotaDeVoz, flowWelcome }
+export const flows = [flowWelcome, flowImages, flowOpenai, flowNotaDeVoz, flowAdmin, flowEnableBot, flowAyuda, flowEnableBotTwo]
+
+export { flowWelcome, flowImages, flowAyuda, flowOpenai, flowNotaDeVoz, flowAdmin, flowEnableBot, flowEnableBotTwo }

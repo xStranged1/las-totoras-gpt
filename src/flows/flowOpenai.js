@@ -1,7 +1,7 @@
-const { addKeyword, EVENTS } = require("@bot-whatsapp/bot");
-const { runGPT } = require("../services/index");
+import { addKeyword } from "@builderbot/bot";
+import { runGPT } from "../services/index.js";
 
-const pushHistory = async (state, role, msg) => { // role: user | assistant | system
+export const pushHistory = async (state, role, msg) => { // role: user | assistant | system
     const myState = await state.getMyState()
     const history = myState?.history || [];
     history.push({
@@ -12,7 +12,7 @@ const pushHistory = async (state, role, msg) => { // role: user | assistant | sy
     return history
 }
 
-const flowOpenai = addKeyword(['openai', 'chatgpt', 'chat gpt'])
+export const flowOpenai = addKeyword(['openai', 'chatgpt', 'chat gpt'])
 
     .addAction(async (ctx, { flowDynamic, state }) => {
         try {
@@ -27,4 +27,3 @@ const flowOpenai = addKeyword(['openai', 'chatgpt', 'chat gpt'])
             console.log(err);
         }
     })
-module.exports = { flowOpenai, pushHistory }

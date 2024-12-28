@@ -1,3 +1,15 @@
+dist/*
+node_modules
+.env
+
+*_sessions
+*tokens
+.wwebjs*
+
+*.log
+*qr.png
+
+
 package-lock.json
 
 # Logs
@@ -9,6 +21,8 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 bot_sessions/
+bot_sessions/baileys_store.json
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Runtime data
